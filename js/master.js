@@ -6,6 +6,8 @@ document.querySelector(".toggle-settings .fa-gear").onclick = function ()
     this.classList.toggle("fa-spin");
     // toggle open
     document.querySelector(".settings-box").classList.toggle("open");
+    // close nav
+    toggleNav()
 };
 
 
@@ -15,7 +17,7 @@ document.querySelector(".toggle-settings .fa-gear").onclick = function ()
 let landingPage = document.querySelector(".landing-page");
 
 // Get array of imgs
-let imgs = ["1.jpg", "4.jpg", "3.jpg","5.jpg"];
+let imgs = ["1.jpg", "4.jpg", "3.jpg", "5.jpg"];
 
 
 
@@ -35,7 +37,7 @@ colors.forEach(li =>
             li.classList.remove("active");
         });
         e.target.classList.add("active");
-        
+
     });
 });
 
@@ -44,10 +46,10 @@ function setColor()
     let sColor = localStorage.getItem("color");
     if (sColor !== null)
     {
-        document.documentElement.style.setProperty("--main--color", sColor);       
+        document.documentElement.style.setProperty("--main--color", sColor);
         colors.forEach(li =>
-            {
-                li.classList.remove("active");
+        {
+            li.classList.remove("active");
             if (sColor === li.dataset.color)
             {
                 li.classList.add("active");
@@ -72,27 +74,27 @@ function randomImages()
     {
         // get random number
 
-    theInterval = setInterval(() =>
-     {
-    let randomNumber = Math.floor(Math.random() * imgs.length);
-    // change background url
-    landingPage.style.backgroundImage = `url("images/` + imgs[randomNumber] +`")` ;
+        theInterval = setInterval(() =>
+        {
+            let randomNumber = Math.floor(Math.random() * imgs.length);
+            // change background url
+            landingPage.style.backgroundImage = `url("images/` + imgs[randomNumber] + `")`;
 
-     }, 5000);
+        }, 5000);
     }
-    
+
 };
 
 randomImages();
 
 // switch backgrounds
-const randomBack= document.querySelectorAll(".random-backgrounds span");
+const randomBack = document.querySelectorAll(".random-backgrounds span");
 
 randomBack.forEach(span =>
 {
     span.addEventListener("click", (e) =>
     {
-        
+
         randomBack.forEach(span =>
         {
             span.classList.remove("active");
@@ -111,7 +113,7 @@ randomBack.forEach(span =>
             clearInterval(theInterval);
             localStorage.setItem("back-ground", false);
         }
-        
+
     });
 });
 // check the backgroun in local storage
@@ -142,7 +144,7 @@ if (backgroundLocal !== null)
     {
         document.querySelector(".no").classList.add("active");
     }
-    
+
 }
 
 
@@ -193,6 +195,8 @@ ourGallery.forEach(img =>
         close.classList.add("close-btn");
 
         popupBox.appendChild(close);
+        // close nav
+        toggleNav()
     });
 });
 
@@ -207,46 +211,22 @@ document.addEventListener("click", (e) =>
     };
 });
 
-// select all bullets
-
-const allBullets = document.querySelectorAll(".nav-bullets .bullet");
-
-// select all links
-const allLinks= document.querySelectorAll(".links a");
-
-function transport(elements)
-{
-    elements.forEach(ele =>
-    {
-        ele.addEventListener("click", (e) =>
-        {
-            e.preventDefault();
-            document.querySelector(e.target.dataset.section).scrollIntoView({
-                behavior: 'smooth',
-            });
-        });
-    });
-};
-
-
-transport(allBullets);
-transport(allLinks);
 
 
 
 // animations
-  
+
 function animation()
 {
     let left2 = document.querySelector(".left-2 .content");
-        let left1 = document.querySelector(".left-1 .content");
-        let right1 = document.querySelector(".right-1 .content");
-        let right2 = document.querySelector(".right-2 .content");
+    let left1 = document.querySelector(".left-1 .content");
+    let right1 = document.querySelector(".right-1 .content");
+    let right2 = document.querySelector(".right-2 .content");
     if (window.scrollY > 1600)
     {
         left1.style.transform = 'translate(0%)';
         right1.style.transform = 'translate(0%)';
-        
+
     }
     else
     {
@@ -262,11 +242,11 @@ function animation()
         right2.style.transform = 'translate(100%)';
         left2.style.transform = 'translate(-100%)';
     }
-    
-    };
+
+};
 function animation2()
-    {
-        let allSkills = document.querySelectorAll(".skill-box .progress span");
+{
+    let allSkills = document.querySelectorAll(".skill-box .progress span");
     if (window.scrollY > 600)
     {
         allSkills.forEach(skill =>
@@ -282,31 +262,66 @@ function animation2()
         });
     }
 };
-function animation3()
-{
-    let animation3 = document.querySelectorAll(".ts-box ");
 
-if (scrollY > 3500)
-{
-    animation3.forEach(ele =>
-    {
-        
-        ele.style.animationName = 'test';
-    })
-} else
-{
-    animation3.forEach(ele =>
-    {
-        
-        ele.style.animationName = '';
-    })
-}
-};
 
 window.onscroll = function ()
 {
     animation();
     animation2();
-    animation3();
-    
+
 };
+
+// mobile nav 
+const navBtn = document.querySelector('.mobile-nav');
+const mobileNav = document.getElementById('links');
+
+navBtn.onclick = () =>
+{
+    if (mobileNav.classList.contains('links'))
+    {
+
+        navBtn.innerHTML = '&#10006;';
+        mobileNav.classList.add('nav-active');
+        mobileNav.classList.remove('links');
+        document.querySelector(".settings-box").classList.remove("open");
+        
+    }
+    else
+    {
+        toggleNav();
+    }
+};
+const toggleNav = () =>
+{
+    navBtn.innerHTML = '&#9776';
+    mobileNav.classList.add('links');
+    mobileNav.classList.remove('nav-active');
+}
+
+
+// select all bullets
+
+const allBullets = document.querySelectorAll(".nav-bullets .bullet");
+
+// select all links
+const allLinks = document.querySelectorAll(".links a");
+
+function transport(elements)
+{
+    elements.forEach(ele =>
+    {
+        ele.addEventListener("click", (e) =>
+        {
+            e.preventDefault();
+            document.querySelector(e.target.dataset.section).scrollIntoView({
+                behavior: 'smooth',
+            });
+            toggleNav()
+        });
+        
+    });
+};
+
+
+transport(allBullets);
+transport(allLinks);
